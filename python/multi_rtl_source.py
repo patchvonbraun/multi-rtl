@@ -125,10 +125,14 @@ class multi_rtl_source(gr.hier_block2):
         
         self.vsink_notifier = vector_sink_fullness_notifier(self) #object providing callback function for notifying the multi_rtl that 
                                                                   #vsinks are full
-
+        rtl_str=""
         for chan in xrange(0,self.num_channels):
+            if rtlsdr_id_strings[chan].isdigit():
+                rtl_str = "rtl="
+            else:
+                rtl_str = ""
             if (chan <= len(rtlsdr_id_strings)) and (rtlsdr_id_strings is not ""):
-                rtl_args= "numchan=" + str(1) + " " + "rtl=" + rtlsdr_id_strings[chan]
+                rtl_args= "numchan=" + str(1) + " " + rtl_str + rtlsdr_id_strings[chan]
                 self.rtlsdr_sources[chan] = osmosdr.source( args=rtl_args) 
             else:
                 rtl_args= "numchan=" + str(1) + " " + "rtl=" + str(chan)            
